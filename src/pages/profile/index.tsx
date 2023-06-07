@@ -14,6 +14,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const userSession = await getSession(context);
     console.log("TOKEN HEREEEE", userSession);
+
+    // Redirect to login page if no session found
+    if (!userSession) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      }
+    }
+
     accessToken = userSession?.user?.access_token || "";
   } catch (e) {
     console.log("No access token detected");
