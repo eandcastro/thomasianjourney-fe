@@ -2,8 +2,8 @@ import ky from "ky";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export async function apiHandler(
-  accessToken: string,
   path: string,
+  accessToken?: string,
   requestMethod?: string,
   res?: NextApiResponse,
   req?: NextApiRequest
@@ -21,8 +21,20 @@ export async function apiHandler(
       headers["Authorization"] = `Bearer ${accessToken}`;
     }
 
+    const requestBody = req?.body ? JSON.parse(req?.body) : {};
+
+    if (
+      requestBody?.isPublicRequest !== undefined &&
+      requestBody?.isPublicRequest
+    ) {
+      headers["x-tj-api-security-token"] = process.env.TJ_SECURITY_TOKEN;
+    }
+
+    delete requestBody["isPublicRequest"];
+
     const kyApi = ky.create({ prefixUrl: process.env.TJ_API_BASE_URL });
 
+    console.log("headers", headers);
     switch (requestMethod || req?.method) {
       case "GET":
         kyResponse = await kyApi.get(path, {
@@ -32,6 +44,7 @@ export async function apiHandler(
       case "POST":
         kyResponse = await kyApi.post(path, {
           headers,
+          body: JSON.stringify(requestBody),
         });
         break;
       case "PATH":
@@ -58,12 +71,15 @@ export async function apiHandler(
 
     responsePayload = await kyResponse.json();
 
+    console.log("status HERE", kyResponse.status);
+    console.log("RESPONSE HERE", responsePayload);
     return { statusCode: kyResponse.status, responsePayload };
   } catch (error: any) {
-    console.log("error here", error);
+    console.log("RAW error", error);
     responsePayload = await error.response.json();
     // statusCode = error.response.status;
 
+    console.log("real error here", responsePayload);
     throw error;
   }
 }

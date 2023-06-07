@@ -9,20 +9,22 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     // TODO: update this to use auth from access_token response of login-confirm endpoint
-    const tokenResult = "abccccc";
+    const tokenResult = null;
     accessToken = tokenResult || "";
   } catch (e) {
     console.log("No access token detected");
   }
 
   // Remove first instance of '/' character as Ky only accepts path that has no / as the first character
-  let apiResponse = await apiHandler(
-    accessToken,
+  const apiResponse = await apiHandler(
     path.replace("/", ""),
+    accessToken,
     req.method,
     res,
     req
   );
+
+  console.log("proxy response", apiResponse.responsePayload);
 
   return res.status(apiResponse.statusCode).json(apiResponse.responsePayload);
 }
