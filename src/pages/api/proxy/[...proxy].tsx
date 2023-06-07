@@ -24,8 +24,6 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     req
   );
 
-  console.log("proxy response", apiResponse.responsePayload);
-
   return res.status(apiResponse.statusCode).json(apiResponse.responsePayload);
 }
 

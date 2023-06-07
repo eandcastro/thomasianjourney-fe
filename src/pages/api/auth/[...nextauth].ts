@@ -41,7 +41,6 @@ const authOptions: AuthOptions = {
 
         // If no error and we have user data, return it
         if (response.ok && user) {
-          console.log("GOES HERE");
           return user;
         }
         // Return null if user data could not be retrieved
@@ -58,14 +57,11 @@ const authOptions: AuthOptions = {
       return session;
     },
     jwt: async ({ token, user }) => {
-      console.log("user nextauth", user);
       if (user) {
         token.id = user.id;
         token.role = user.role;
         token.fcm_token = user.fcm_token;
         token.access_token = user.access_token;
-        // token.access_token = account?.access_token;
-        console.log("has user nextauth", user);
       }
 
       return token;
