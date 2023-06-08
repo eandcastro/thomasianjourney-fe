@@ -1,17 +1,14 @@
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import router from "next/router";
-import { useEffect } from "react";
 
 export default function Home() {
-  const { data, status } = useSession();
-
-  // Redirect to login page if no session found
-  useEffect(()=>{
-    if(status !== 'loading' || !data) {
+  const { data, status } = useSession({
+    required: true,
+    onUnauthenticated() {
       router.push('/')
-    }
-  }, [data, status])
+    },
+  });
 
   return (
     <main

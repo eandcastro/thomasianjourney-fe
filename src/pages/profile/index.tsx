@@ -8,7 +8,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   try {
     const userSession = await getSession(context);
-    console.log("TOKEN HEREEEE", userSession);
 
     // Redirect to login page if no session found
     if (!userSession) {
@@ -25,9 +24,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     console.log("No access token detected");
   }
 
-  const path = "me";
+  const path = "user/me";
 
-  console.log("accessToken HEREEEE", accessToken);
   const { responsePayload } = await apiHandler(path, accessToken, "GET");
 
   return {
@@ -39,7 +37,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 // eslint-disable-next-line no-unused-vars
-export default function ClientProfile({
+export default function Profile({
   session,
   data,
 }: {

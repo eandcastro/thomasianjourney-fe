@@ -34,7 +34,6 @@ export async function apiHandler(
 
     const kyApi = ky.create({ prefixUrl: process.env.TJ_API_BASE_URL });
 
-    console.log("headers", headers);
     switch (requestMethod || req?.method) {
       case "GET":
         kyResponse = await kyApi.get(path, {
@@ -71,7 +70,6 @@ export async function apiHandler(
 
     responsePayload = await kyResponse.json();
 
-    console.log("status HERE", kyResponse.status);
     console.log("RESPONSE HERE", responsePayload);
     return { statusCode: kyResponse.status, responsePayload };
   } catch (error: any) {

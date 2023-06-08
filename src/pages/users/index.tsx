@@ -5,15 +5,12 @@ import { GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
 import { getSession } from "next-auth/react";
 
-// 'use client'
-
 // using SSR
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   let accessToken: string = "";
 
   try {
     const userSession = await getSession(context);
-    console.log("TOKEN HEREEEE", userSession);
     accessToken = userSession?.user?.access_token || "";
   } catch (e) {
     console.log("No access token detected");
@@ -21,7 +18,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const path = "user";
 
-  console.log("accessToken HEREEEE", accessToken);
   const { responsePayload } = await apiHandler(path, accessToken, "GET");
 
   return {
@@ -33,7 +29,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 // eslint-disable-next-line no-unused-vars
-export default function UserProfile({
+export default function Users({
   session,
   data,
 }: {
@@ -44,7 +40,6 @@ export default function UserProfile({
   // eslint-disable-next-line no-unused-vars
   const [users, setUsers] = useState<any[]>(data || []);
 
-  console.log("sample data", data);
   // using CSR
   // const router = useRouter()
   // const getClients = useCallback(async () => {
