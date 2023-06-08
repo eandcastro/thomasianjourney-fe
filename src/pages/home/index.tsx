@@ -16,7 +16,7 @@ export default function Home() {
     >
       {status === "authenticated" && data !== null && (
         <>
-          <h2>Welcome {data.user.role}</h2>
+          <h2>Welcome {data.user.office}</h2>
           <p>User ID: {data.user.id}</p>
           {JSON.stringify(data.user)}
           <Link href="">
