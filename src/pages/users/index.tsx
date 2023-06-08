@@ -4,6 +4,7 @@ import { apiHandler } from "@/util/api";
 import { GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 // using SSR
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -41,7 +42,7 @@ export default function Users({
   const [users, setUsers] = useState<any[]>(data || []);
 
   // using CSR
-  // const router = useRouter()
+  const router = useRouter()
   // const getClients = useCallback(async () => {
   //   const responsePayload = await ky(`${router.basePath}/api/proxy/clients`, {
   //     method: 'GET',
@@ -56,7 +57,9 @@ export default function Users({
   // useEffect(() => {
   //   getClients()
   // }, [getClients])
-
+  const redirectToUserProfile = (id: string) => {
+    router.push(`/users/${id}`)
+  }
   return (
     <>
       <main className={"flex min-h-screen flex-col items-center"}>
@@ -207,7 +210,7 @@ export default function Users({
                         {show == 0 && (
                           <div className="dropdown-content bg-white shadow w-24 absolute z-30 right-0 mr-6 ">
                             <div className="text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
-                              <p>Edit</p>
+                              <p onClick={() => redirectToUserProfile(user.id)}>Edit</p>
                             </div>
                             <div className="text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
                               <p>Delete</p>
