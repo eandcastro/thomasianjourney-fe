@@ -26,7 +26,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 // eslint-disable-next-line no-unused-vars
-export default function ClientProfile({ session, data }: { session: any, data: any }) {
+export default function UserProfile({ session, data }: { session: any, data: any }) {
   return (
     <>
       <main className={'flex min-h-screen flex-col items-center'}>
